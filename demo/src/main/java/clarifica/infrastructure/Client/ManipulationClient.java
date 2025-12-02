@@ -14,13 +14,45 @@ public class ManipulationClient implements Runnable {
     private PrintWriter out;
     private BufferedReader in;
 
+    public static void main(String[] args) {
+        ManipulationClient cliente = new ManipulationClient();
+        cliente.run(); 
+    }
+     // novo método estático para obter token
+    public static String obterTokenDoServidor() {
+        ManipulationClient client = new ManipulationClient();
+        String tokenRecebido = "";
+        try {
+            client.startConnection("127.0.0.1", Constants.hostId);
+            
+            tokenRecebido = client.sendMessage("GERAR_TOKEN");
+            
+            client.stopConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ERRO_TOKEN"; 
+        }
+        return tokenRecebido;
+    }
+
     @Override
     public void run() {
         System.out.println("Client running...");
         try {
-            startConnection("127.0.0.1", Constants.hostId);
-            System.out.println("Server said: " + sendMessage("hello server"));
-            stopConnection();
+            startConnection("127.0.0.1", Constants.hostId); //
+
+            String nomeDaObra = "Teste_01"; 
+            String resposta = sendMessage("CRIAR_OBRA " + nomeDaObra);
+
+            System.out.println("O Servidor respondeu: " + resposta);
+
+            if (resposta.startsWith("ID_OBRA:")) {
+                String idRecebido = resposta.split(":")[1]; 
+                System.out.println(">>> Sucesso! O ID da nova obra é: " + idRecebido);
+            }
+
+            stopConnection(); 
+
         } catch (IOException e) {
             e.printStackTrace();
         }
