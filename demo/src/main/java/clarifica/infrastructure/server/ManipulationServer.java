@@ -1,3 +1,5 @@
+//Responsável de User: Bruno Macedo e Bruno Martins
+
 package clarifica.infrastructure.server;
 
 import java.io.BufferedReader;

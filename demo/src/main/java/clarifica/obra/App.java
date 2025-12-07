@@ -1,3 +1,5 @@
+//Responsável de User: Bruno Macedo
+
 package clarifica.obra;
 
 import java.io.IOException;
